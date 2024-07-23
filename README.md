@@ -16,7 +16,7 @@
 - データを取得する機能はv1.0においては未実施
 
 ## ③DEMO
-- 別途準備
+- https://chisaxworks.sakura.ne.jp/gs_kadai11_all/
 
 ## ④作ったアプリケーション用のIDまたはPasswordがある場合
 - ユーザ１
