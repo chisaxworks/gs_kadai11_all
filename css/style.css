@@ -1,0 +1,429 @@
+/*--- 共通 ---*/
+
+body {
+    font-family: "Kiwi Maru", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+    background-color: #d6eff6;
+    color: #333333;
+    overflow-y: scroll;
+}
+
+header {
+    background-color: #d6eff6;
+    color: #30add1;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    padding: 10px 50px;
+}
+
+.inner {
+    padding: 50px 25px 30px;
+    min-height: calc(100vh - 30px);
+    margin: 0 auto;
+}
+
+footer {
+    background-color: #ffffff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* フォント */
+h1 {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0px auto 20px;
+}
+
+.ename {
+    font-size: 18px;
+}
+
+.main_area, .userinfo_wrap {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+footer {
+    font-size: 10px;
+}
+
+/* ユーザ情報（ヘッダー） */
+.userinfo{
+    cursor: pointer;
+    position: relative;
+}
+
+.userinfo_wrap {
+    display: none;
+    position: absolute;
+    width: 200px;
+    padding: 0px 50px 10px 30px;
+    top: 50px;
+    right: 0px;
+    text-align: center;
+}
+
+.userinfo_subwrap {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.userinfo:hover, .userinfo_subwrap a:hover {
+    color: #fdcb6e;
+}
+
+/* ボタン（共通） */
+.act_btn, .sub_btn{
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    display: block;
+    margin: 30px auto 0;
+    width: 170px;
+    height: 40px;
+}
+
+.act_btn{
+    color: #ffffff;
+    background-color: #888888;
+}
+
+.sub_btn{
+    color: #888888;
+    background-color: #cccccc;
+}
+
+.act_btn:hover, .sub_btn:hover, .mgact_btn:hover, .mgsub_btn:hover {
+    background-color: #333333;
+    color: #fdcb6e;
+}
+
+.mgact_btn, .mgsub_btn {
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.mgact_btn {
+    background-color: #ffffff;
+    color: #888888;
+}
+
+.mgsub_btn {
+    background-color: #cccccc;
+    color: #ffffff;
+}
+
+.ed_btn {
+    background-color: #30add1;
+    color: #ffffff;
+}
+
+.mg_btn_wrap {
+    display: flex;
+    column-gap: 10px;
+    justify-content: center;
+}
+
+/*--- main.php ---*/
+/* 大枠 */
+.main_area {
+    display: flex;
+    column-gap: 10px;
+}
+
+.filter_area {
+    width: 20%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.data_area {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: fit-content;
+}
+
+/* 上段エリア */
+.alert_area{
+    color: red;
+    border: 2px solid red;
+    border-radius: 10px;
+    margin: 20px auto;
+    padding: 10px 20px;
+    width: fit-content;
+    line-height: 1.5;
+}
+
+.tab_wrap{
+    color: #ffffff;
+    background-color: #cccccc;
+    margin: 20px auto;
+    border-radius: 15px;
+    display: flex;
+    width: fit-content;
+}
+
+.tab_item {
+    border-radius: 15px;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.active_tab {
+    background-color: #333333;
+}
+
+/* フィルターエリア */
+.filter_area .mgsub_btn {
+    margin-top: 50px;
+}
+
+.filter_favlist {
+    display: flex;
+    flex-direction: column;
+}
+
+.favli_link{
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.favli_link:hover {
+    background-color: #d6eff6;
+    cursor: pointer;
+}
+
+.active_fav {
+    background-color: #97d6e8;
+    color: #ffffff;
+}
+
+/* 一覧表示エリア */
+.item {
+    color: #ffffff;
+    background-color: #888888;
+    border-radius: 10px;
+    padding: 20px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 20px;
+    height: fit-content;
+}
+
+.item_sub {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    line-height: 1.3;
+}
+
+.ename {
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 10px;
+}
+
+.item p {
+    display: flex;
+    align-items: flex-start;
+}
+
+.item img {
+    width: 14px;
+    margin-right: 10px;
+    padding-top: 2px;
+}
+
+/*--- favorite.php ---*/
+/* フォーム共通 */
+.input_form {
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.input_item {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.inputarea {
+    border: 1px solid #2d3436;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 300px;
+    height: 40px;
+    padding: 0 10px;
+}
+
+select.inputarea {
+    appearance: auto;
+}
+
+/* favorite個別 */
+.add_fav {
+    margin: 20px auto 0;
+}
+
+.favlist_area {
+    margin: 50px auto 0;
+    width: fit-content;
+}
+
+.favlist {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    padding: 10px;
+}
+
+.favlist li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 20px;
+}
+
+.delete_btn {
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+    font-size: 10px;
+    background-color: #cccccc;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+.delete_btn:hover {
+    background-color: #333333;
+    color: #fdcb6e;
+}
+
+/*--- event_detail.php ---*/
+/* 詳細部分 */
+.event_detail {
+    max-width: 20%;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px 20px;
+    font-size: 14px;
+    position: relative;
+}
+
+.ed_close_btn{
+    width: fit-content;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.ed_close_btn:hover {
+    color: #fdcb6e;
+}
+
+.detail_item_wrap {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    margin-bottom: 25px;
+}
+
+.detail_item h3 {
+    font-weight: 500;
+    margin-bottom: 5px;
+    border-left: 2px solid #30add1;
+    padding-left: 5px;
+}
+
+.detail_item p{
+    padding-left: 7px;
+    line-height: 1.2;
+}
+
+/* チケット情報部分 */
+.ticketinfo_wrap {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    margin-top: 10px;
+}
+
+.ticketinfo_item {
+    padding: 15px 20px;
+    background-color: #97d6e8;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    font-weight: 500;
+}
+
+.ti_type, .ti_type_sp {
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: fit-content;
+    font-size: 12px;
+}
+
+.ti_type {
+    background-color: #ffffff;
+}
+
+.ti_type_sp {
+    background-color: #fdcb6e;
+}
+
+.ti_agency {
+    font-size: 15px;
+    margin: 3px 0;
+}
+
+.ti_agency:hover {
+    color: #ffffff;
+}
+
+.ti_stitle {
+    font-size: 12px;
+}
+
+/* --------------------
+    for SP size 
+-------------------- */
+@media screen and (max-width: 768px){
+
+
+    h1 {
+        font-size: 20px;
+    }
+
+}

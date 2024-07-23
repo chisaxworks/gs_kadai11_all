@@ -1,0 +1,137 @@
+body {
+    font-family: "Kiwi Maru", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+    background-color: #edf7fa;
+    color: #333333;
+    overflow-y: scroll;
+}
+
+header {
+    background-color: #d6eff6;
+    color: #30add1;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    padding: 10px 50px;
+}
+
+.inner {
+    padding: 50px 25px 30px;
+    min-height: calc(100vh - 30px);
+    margin: 0 auto;
+}
+
+footer {
+    background-color: #ffffff;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* フォント */
+
+h1 {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0px auto 20px;
+}
+
+.main_area {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+footer {
+    font-size: 10px;
+}
+
+/* ボタン */
+.act_btn, .sub_btn{
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+    display: block;
+    margin: 30px auto 0;
+    width: 170px;
+    height: 40px;
+}
+
+.act_btn{
+    color: #ffffff;
+    background-color: #888888;
+}
+
+.sub_btn{
+    color: #888888;
+    background-color: #cccccc;
+}
+
+/* hover */
+.act_btn:hover, .sub_btn:hover {
+    background-color: #333333;
+    color: #fdcb6e;
+}
+
+/* ログイン関連 */
+.logreg_wrap {
+    font-size: 16px;
+    margin: 30px auto;
+}
+
+.alert {
+    border: 1px solid red;
+    color: red;
+    padding: 10px 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 0 auto 30px;
+}
+
+.input_form {
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.input_item {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.inputarea {
+    border: 1px solid #2d3436;
+    border-radius: 5px;
+    background-color: #ffffff;
+    width: 300px;
+    height: 40px;
+    padding: 0 10px;
+}
+
+
+/* --------------------
+    for SP size 
+-------------------- */
+@media screen and (max-width: 768px){
+
+    .inner {
+        padding: 80px 25px 30px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+}
