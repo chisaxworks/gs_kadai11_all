@@ -138,7 +138,9 @@ if($event_id){
     // SQLでデータ取得（公演データ）
     $stmt4 = $pdo->prepare("SELECT event_name, DATE_FORMAT(event_startDate, '%Y/%m/%d') as event_startDate,
                                 DATE_FORMAT(event_startTime, '%H:%i') as event_startTime,
-                                DATE_FORMAT(event_openTime,'%H:%i') as event_openTime, event_members, venue_name, venue_pref 
+                                DATE_FORMAT(event_openTime,'%H:%i') as event_openTime, event_members, venue_name, venue_pref,
+                                DATE_FORMAT(event_startDate, '%Y%m%d') as forgoogle_startDate,
+                                DATE_FORMAT(event_startTime, '%H%i%s') as forgoogle_startTime
                             FROM event
                             JOIN venue on event.venue_id = venue.venue_id
                             WHERE event_id = :event_id");
@@ -153,6 +155,20 @@ if($event_id){
         $e_result = $stmt4->fetch();
 
     }
+
+
+    // 追加：Googleカレンダーボタン
+        // 終了時間はまちまちなので仮で1時間にセット
+        $forgoogle_endTime =  $e_result['forgoogle_startTime'] + 10000;
+        // リンクの設定
+        $google_calendar .= '<a target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE';
+        $google_calendar .= '&text=' . h($e_result['event_name']);
+        $google_calendar .= '&dates=' . h($e_result['forgoogle_startDate'])  . 'T' . h($e_result['forgoogle_startTime']);
+        $google_calendar .= '/' . h($e_result['forgoogle_startDate'])  . 'T' . h($forgoogle_endTime);
+        $google_calendar .= '&location='. h($e_result['venue_name']);
+        $google_calendar .= '&details=終了時刻は1時間後に仮置きしていますので、劇場の情報をご確認ください';
+        $google_calendar .= '" class="google_btn">Googleカレンダーに登録</a>';
+
 
     /*--- 販売情報一覧 ---*/
     // SQLでデータ取得（販売データ）
@@ -245,6 +261,7 @@ if($event_id){
                 <p><?= h($e_result['event_members']) ?></p>
             </div>
         </div>
+        <?= $google_calendar?>
         <h2>チケット情報</h2>
         <div class="ticketinfo_wrap">
             <?= $ticket_info ?>
