@@ -93,7 +93,7 @@ $stmt3 = $pdo->prepare("SELECT event.event_id, event_name, DATE_FORMAT(event_sta
                         LEFT JOIN(
                             SELECT event_id FROM event_mg_tbl WHERE user_id = $userid GROUP BY event_id
                         ) AS temptbl ON event.event_id = temptbl.event_id
-                        WHERE temptbl.event_id IS NULL AND $filter
+                        WHERE temptbl.event_id IS NULL AND $filter AND event_startDate >= CURDATE()
                         ORDER BY event_startDate");
 $status3 = $stmt3->execute();
 
@@ -178,7 +178,7 @@ if($event_id){
                             FROM ticket_info
                             JOIN ticket_agency on ticket_info.agency_id = ticket_agency.agency_id
                             JOIN sales_methods on ticket_info.sm_id = sales_methods.sm_id
-                            WHERE event_id = :event_id
+                            WHERE event_id = :event_id AND ti_endDate >= CURDATE()
                             ORDER BY ticket_info.sm_id DESC");
     $stmt5->bindValue(':event_id', $event_id, PDO::PARAM_INT);
     $status5 = $stmt5->execute();

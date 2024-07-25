@@ -79,7 +79,7 @@ $stmt3 = $pdo->prepare("SELECT em_id, event.event_id as event_id, event_name, DA
                         FROM event
                         JOIN venue on event.venue_id = venue.venue_id
                         JOIN event_mg_tbl ON event.event_id = event_mg_tbl.event_id
-                        WHERE event_members LIKE :ent_name AND undermg_flg = 1 AND user_id = $userid
+                        WHERE event_members LIKE :ent_name AND undermg_flg = 1 AND user_id = $userid AND event_startDate >= CURDATE()
                         ORDER BY event_startDate");
 
 $stmt3->bindValue(':ent_name', $ent_name, PDO::PARAM_STR);
@@ -163,7 +163,7 @@ if($event_id){
                             FROM ticket_info
                             JOIN ticket_agency on ticket_info.agency_id = ticket_agency.agency_id
                             JOIN sales_methods on ticket_info.sm_id = sales_methods.sm_id
-                            WHERE event_id = :event_id
+                            WHERE event_id = :event_id AND ti_endDate >= CURDATE()
                             ORDER BY ticket_info.sm_id DESC");
     $stmt5->bindValue(':event_id', $event_id, PDO::PARAM_INT);
     $status5 = $stmt5->execute();
