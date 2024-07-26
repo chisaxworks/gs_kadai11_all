@@ -242,6 +242,11 @@ footer {
     color: #ffffff;
 }
 
+.fav_none{
+    margin-top: 20px;
+    text-align: center;
+}
+
 /* 一覧表示エリア */
 .item {
     color: #ffffff;

@@ -45,7 +45,7 @@ if ($status1==false) {
 
     // 結果が0件だった場合のメッセージ表示
     if($favCount == 0) {
-        $favli = '<p>推しの登録がありません</p>';
+        $favli = '<p class="fav_none">推しの登録がありません</p>';
     }
 
     // ent_idがない場合（全てが選択されている状態）
@@ -84,50 +84,57 @@ if($n_val['ent_name']){
     $filter = "(" . $forfilter . ")";
 }
 
-// SQLでデータ取得（公演データ：未管理のものだけ）
-$stmt3 = $pdo->prepare("SELECT event.event_id, event_name, DATE_FORMAT(event_startDate, '%Y/%m/%d') as event_startDate,
-                            DATE_FORMAT(event_startTime, '%H:%i') as event_startTime,
-                            DATE_FORMAT(event_openTime,'%H:%i') as event_openTime, event_members, venue_name, venue_pref 
-                        FROM event
-                        JOIN venue on event.venue_id = venue.venue_id
-                        LEFT JOIN(
-                            SELECT event_id FROM event_mg_tbl WHERE user_id = $userid GROUP BY event_id
-                        ) AS temptbl ON event.event_id = temptbl.event_id
-                        WHERE temptbl.event_id IS NULL AND $filter AND event_startDate >= CURDATE()
-                        ORDER BY event_startDate");
-$status3 = $stmt3->execute();
-
-// データ表示
+// SQLでデータ取得（公演データ：未管理のものだけ/推しの登録がない場合は何も出ない）
 $item="";
-if ($status3==false) {
-    sql_error($stmt3);
+if($favCount == 0) {
+    //推しの登録がない場合
+    $item = '表示する公演情報がありません';
 
 }else{
-    $itemCount = 0; // 結果のカウント用変数
+    //推しの登録がある場合
+    $stmt3 = $pdo->prepare("SELECT event.event_id, event_name, DATE_FORMAT(event_startDate, '%Y/%m/%d') as event_startDate,
+                                DATE_FORMAT(event_startTime, '%H:%i') as event_startTime,
+                                DATE_FORMAT(event_openTime,'%H:%i') as event_openTime, event_members, venue_name, venue_pref 
+                            FROM event
+                            JOIN venue on event.venue_id = venue.venue_id
+                            LEFT JOIN(
+                                SELECT event_id FROM event_mg_tbl WHERE user_id = $userid GROUP BY event_id
+                            ) AS temptbl ON event.event_id = temptbl.event_id
+                            WHERE temptbl.event_id IS NULL AND $filter AND event_startDate >= CURDATE()
+                            ORDER BY event_startDate");
+    $status3 = $stmt3->execute();
 
-    // whileで1件ずつ取得
-    while( $n_result = $stmt3->fetch(PDO::FETCH_ASSOC)){
-        $itemCount++;
+    // データ表示
+    if ($status3==false) {
+        sql_error($stmt3);
 
-        // 推しで絞り込みしていた場合のためにif文で分岐（絞り込んでいる場合はGETの値を追加）
-        $item .= '<div class="item">';
-        $item .= '<div class="item_sub"><p class="ename">' . h($n_result['event_name']) . '</p>';
-        $item .= '<p><img src="img/venue.png" alt="会場">' . h($n_result['venue_name']) . '</p>';
-        $item .= '<p><img src="img/date.png" alt="公演日時">' . h($n_result['event_startDate']) .' '. h($n_result['event_startTime']) . '開演</p>';
-        $item .= '<p><img src="img/entertainer.png" alt="出演者">' . h($n_result['event_members']) . '</p></div>';
-        if($ent_id){
-            $item .= '<div class="mg_btn_wrap"><a class="mgact_btn ed_btn" href="main_un.php?edid=' . h($n_result['event_id']) . '&entid=' . $ent_id . '">詳細</a>';
-        }else{
-            $item .= '<div class="mg_btn_wrap"><a class="mgact_btn ed_btn" href="main_un.php?edid=' . h($n_result['event_id']) . '">詳細</a>';
+    }else{
+        $itemCount = 0; // 結果のカウント用変数
+
+        // whileで1件ずつ取得
+        while( $n_result = $stmt3->fetch(PDO::FETCH_ASSOC)){
+            $itemCount++;
+
+            // 推しで絞り込みしていた場合のためにif文で分岐（絞り込んでいる場合はGETの値を追加）
+            $item .= '<div class="item">';
+            $item .= '<div class="item_sub"><p class="ename">' . h($n_result['event_name']) . '</p>';
+            $item .= '<p><img src="img/venue.png" alt="会場">' . h($n_result['venue_name']) . '</p>';
+            $item .= '<p><img src="img/date.png" alt="公演日時">' . h($n_result['event_startDate']) .' '. h($n_result['event_startTime']) . '開演</p>';
+            $item .= '<p><img src="img/entertainer.png" alt="出演者">' . h($n_result['event_members']) . '</p></div>';
+            if($ent_id){
+                $item .= '<div class="mg_btn_wrap"><a class="mgact_btn ed_btn" href="main_un.php?edid=' . h($n_result['event_id']) . '&entid=' . $ent_id . '">詳細</a>';
+            }else{
+                $item .= '<div class="mg_btn_wrap"><a class="mgact_btn ed_btn" href="main_un.php?edid=' . h($n_result['event_id']) . '">詳細</a>';
+            }
+
+            $item .= '<a class="mgact_btn start_mg" href="add_mg.php?id=' . h($n_result['event_id']) . '">管理する</a>';
+            $item .= '<a class="mgsub_btn outof_mg" href="outof_mg.php?id=' . h($n_result['event_id']) . '">管理しない</a></div></div>';
+
         }
-
-        $item .= '<a class="mgact_btn start_mg" href="add_mg.php?id=' . h($n_result['event_id']) . '">管理する</a>';
-        $item .= '<a class="mgsub_btn outof_mg" href="outof_mg.php?id=' . h($n_result['event_id']) . '">管理しない</a></div></div>';
-
-    }
-    // 結果が0件だった場合のメッセージ表示
-    if ($itemCount == 0) {
-        $item = '表示する公演情報がありません';
+        // 結果が0件だった場合のメッセージ表示
+        if ($itemCount == 0) {
+            $item = '表示する公演情報がありません';
+        }
     }
 }
 

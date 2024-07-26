@@ -28,7 +28,7 @@ if(!isset($_SESSION["userid"])){
     } else {
         // 格納！
         $val = $stmt->fetch();
-        $_SESSION["userid"] = $val["id"];
+        $_SESSION["userid"] = $val["user_id"];
     }
 }
 /*----- ログイン関連部分 -----*/
